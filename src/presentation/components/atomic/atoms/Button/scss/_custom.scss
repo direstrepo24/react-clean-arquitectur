@@ -33,18 +33,3 @@
     text-decoration: underline;
 }
  
-@include desktop-screen{
-    .btn{
-        @include btn-tailwind-desktop;
-        width: 343px;
-        height: 56px;
-    }
-}
- 
-@include mobile-screen{
-    .btn{
-        @include btn-tailwind-mobile;
-        width: 270px;
-        height: 48px;
-    }
-}
