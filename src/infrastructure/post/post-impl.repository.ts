@@ -18,6 +18,8 @@ export class PostImplRepository implements PostRepository  {
         const options = <HttpClientOptions>{
             path: `${this.baseURL}/posts`,
             body: PostMapper.toCreateDto(request),
+        
+            
         };
         const result = await this.httpClient.post<PostResponseDto>(options)
         if(!result.ok){

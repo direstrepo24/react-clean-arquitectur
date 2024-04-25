@@ -1,0 +1,16 @@
+{
+    "user": "Usuario",
+    "title": "Título",
+    "body": "Texto",
+    "submit": "Enviar",
+    "userRequired": "Usuario es obligado",
+    "titleRequired": "El título es obligado",
+    "bodyRequired": "El texto es requerido",
+    "titleMin": "El título debe tener al menos 6 caracteres",
+    "titleMax": "El título no debe exceder los 20 caracteres",
+    "bodyMin": "El texto debe tener al menos 6 caracteres",
+    "bodyMax": "El texto no debe exceder los 20 caracteres",
+    "currency": "USD",
+    "currencyFormat": "${{value, number}} USD"
+  }
+  

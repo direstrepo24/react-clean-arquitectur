@@ -2,6 +2,7 @@ import { PostRequestDom } from "@domain/post";
 import { UserDom } from "@domain/users"
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next";
 import * as Yup from 'yup';
 
 interface PostFormProps {
@@ -12,16 +13,16 @@ interface PostFormProps {
 
 
 
-
-
 const PostFormYup =({users=[],onClick}:Readonly<PostFormProps>)=> {
+
+    const { t } = useTranslation();
 
     const validationSchema = Yup.object().shape({
         userid: Yup.string().required('user is required'),
         title: Yup.string()
-          .required('title is required')
-          .min(6, 'title must be at least 6 characters')
-          .max(20, 'title must not exceed 20 characters'),
+          .required(t("titleRequired")?? '')
+          .min(6, (t("titleMin")?? ''))
+          .max(20, (t("titleMax")?? '')),
         body: Yup.string()
           .required('body is required')
           .min(6, 'body must be at least 6 characters')
@@ -47,6 +48,8 @@ const PostFormYup =({users=[],onClick}:Readonly<PostFormProps>)=> {
     resolver: yupResolver(validationSchema)
   });
   const onSubmit = (data:PostRequestDom) => onClick(data)
+  const exampleAmount = 1000; // Ejemplo de cantidad monetaria
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form-control w-full max-w-xs mx-auto text-white">
@@ -82,6 +85,14 @@ const PostFormYup =({users=[],onClick}:Readonly<PostFormProps>)=> {
             {...register("body", { required: true })}
           />
            <div className="invalid-feedback  text-black">{errors.body?.message}</div>
+        </div>
+
+         {/* Valor monetario de ejemplo */}
+         <div>
+          <label htmlFor="amount" className="label text-black">Valor Monetario</label>
+          <div id="amount" className="text-black">
+             {t('currencyFormat', { value: exampleAmount, number: 'number' })} 
+         </div>
         </div>
   
         {/* Botón de envío */}

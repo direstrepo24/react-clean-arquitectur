@@ -1,0 +1,18 @@
+{
+    "user": "Usuario",
+    "title": "Título",
+    "body": "Contenido",
+    "submit": "Enviar",
+    "userRequired": "Usuario es requerido",
+    "titleRequired": "El título es requerido",
+    "bodyRequired": "El contenido es requerido",
+    "titleMin": "El título debe tener al menos 6 caracteres",
+    "titleMax": "El título no debe exceder los 20 caracteres",
+    "bodyMin": "El contenido debe tener al menos 6 caracteres",
+    "bodyMax": "El contenido no debe exceder los 20 caracteres",
+    "currency": "COP",
+    "currencyFormat": "${{value, number}} COP"
+      
+      
+  }
+  
