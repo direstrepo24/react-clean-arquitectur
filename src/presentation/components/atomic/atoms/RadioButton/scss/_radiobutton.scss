@@ -1,0 +1,44 @@
+@import './tailwind';
+@import './variables';
+
+
+
+.radio-container {
+    position: relative;
+  }
+  
+  .radio-label {
+    @include tailwind-radio-styles(blue);
+    display: flex; // Cambiado a flex para alinear los elementos verticalmente
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .radio-custom {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%; // Hacer el radio button circular
+    margin-right: 0.5rem;
+    position: relative;
+  }
+  
+  .radio input[type='radio'] {
+    display: none; // Cambiado para ocultar el input
+  }
+  
+  .radio input[type='radio']:checked + .radio-custom::before {
+    content: '';
+    display: block;
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: $radio-checked-color; // Usar la variable para el color de la marca de selección
+    border-radius: 50%; // Hacer la marca de selección circular
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    border: 2px solid $radio-border-color; // Usar la variable para el color del borde
+  }
+  
+
+  

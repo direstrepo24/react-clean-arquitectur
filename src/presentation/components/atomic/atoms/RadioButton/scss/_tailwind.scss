@@ -1,0 +1,17 @@
+@import '@tailwind/base';
+@import '@tailwind/components';
+@import '@tailwind/utilities';
+
+@mixin tailwind-radio-styles($color) {
+    @if $color == 'blue' {
+      @apply p-2 border-b-2 transition border-blue-500 focus:border-blue-700 outline-none;
+    } @else if $color == 'green' {
+      @apply p-2 border-b-2 transition border-green-500 focus:border-green-700 outline-none;
+    } // Añade más casos según sea necesario para otros colores
+    // Agregar estilos de SASS
+    border: none; // Quitar el borde
+    border-radius: 2px; // Quitar el redondeo de la esquina superior izquierda y derecha
+    box-shadow: none; // Quitar cualquier sombra
+    outline: none; // Quitar el enfoque del marco al hacer clic
+  }
+  

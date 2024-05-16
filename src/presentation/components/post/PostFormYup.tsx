@@ -4,16 +4,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next";
 import * as Yup from 'yup';
+import Button from "../atomic/atoms/Button";
+import CheckIcon from "@presentation/assets/icons/CheckIcon";
+
+import Select, { InputActionMeta, SingleValue } from 'react-select'
+import AsyncSelect from "react-select/async";
+import { Debounce } from "@core/index";
+
 
 interface PostFormProps {
     users: UserDom[],
     onClick: (_:PostRequestDom) => void;
-
+    onSearchUser: (value:string)=> Promise<UserDom[]>;
+  
 }
 
-
-
-const PostFormYup =({users=[],onClick}:Readonly<PostFormProps>)=> {
+const PostFormYup =({users=[],onClick, onSearchUser}:Readonly<PostFormProps>)=> {
 
     const { t } = useTranslation();
 
@@ -44,24 +50,58 @@ const PostFormYup =({users=[],onClick}:Readonly<PostFormProps>)=> {
     register,
     handleSubmit,
     formState: { errors },
+    
   } = useForm<PostRequestDom>({
     resolver: yupResolver(validationSchema)
   });
   const onSubmit = (data:PostRequestDom) => onClick(data)
   const exampleAmount = 1000; // Ejemplo de cantidad monetaria
+ 
+  /* const loadOptions = (
+    inputValue: string,
+    callback: (options: UserDom[]) => void
+  ) => {
+    
+    setTimeout(async() => {
+     console.log("llego al formyup", users)
 
+  
 
+     //let callbacklocal = 
+     const debounce = new Debounce<string, Promise<UserDom[]>>(200);
+     
+     debounce.execute(inputValue,async (value: string)=>{
+      console.log("value execuete",value)
+     const result = await onSearchUser(value)
+     callback(result)
+      return result
+  })
+    
+  
+    }, 1000);
+  }; */
+
+  //const promiseOptions = (inputValue: string) =>new Promise<UserDom[]>((resolve) => {resolve(onSearchUser(inputValue))});
+ 
+  const promiseOptions = (inputValue: string) =>
+    new Promise<UserDom[]>((resolve) => {
+      setTimeout(() => {
+        resolve(onSearchUser(inputValue));
+      }, 1000);
+    });
+ 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form-control w-full max-w-xs mx-auto text-white">
       <div className="grid grid-cols-1 gap-4">
         {/* Usuario */}
         <div>
           <label htmlFor="userid" className="label text-black">Usuario</label>
-          <select id="userid" {...register("userid", { required: true })} className="select select-bordered w-full">
+         {/*  <select id="userid" {...register("userid", { required: true })} className="select select-bordered w-full">
             {users.map(user => (
               <option key={user.id} value={user.id ?? ""}>{user.name}</option>
             ))}
-          </select>
+          </select> */}
+          <AsyncSelect  loadOptions={promiseOptions} defaultOptions={users} getOptionLabel={(value)=>value.name ?? ''} getOptionValue={(value)=>value.id ?? ''} />
           <div className="invalid-feedback  text-black">{errors.userid?.message}</div>
         </div>
   
@@ -96,9 +136,16 @@ const PostFormYup =({users=[],onClick}:Readonly<PostFormProps>)=> {
         </div>
   
         {/* Botón de envío */}
-        <div>
+       {/*  <div>
           <input type="submit" className="btn btn-success w-full" />
-        </div>
+        </div> */}
+        <Button
+            onClick={handleSubmit(onSubmit)}
+            color="primary"
+        >
+            Register {/* texto del botón */}
+            <CheckIcon className="ml-2 h-5 w-5 text-white" /> {/* ícono con margen y tamaño */}
+        </Button>
       </div>
     </form>
   );
