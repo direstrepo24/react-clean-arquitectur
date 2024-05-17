@@ -9,17 +9,21 @@ import CheckIcon from "@presentation/assets/icons/CheckIcon";
 
 import Select, { InputActionMeta, SingleValue } from 'react-select'
 import AsyncSelect from "react-select/async";
-import { Debounce } from "@core/index";
+import { Debounce, debounce, debounceUtil } from "@core/index";
 
 
 interface PostFormProps {
     users: UserDom[],
     onClick: (_:PostRequestDom) => void;
     onSearchUser: (value:string)=> Promise<UserDom[]>;
-  
+    allUsersLoad:()=>void;
 }
 
-const PostFormYup =({users=[],onClick, onSearchUser}:Readonly<PostFormProps>)=> {
+  //let callbacklocal = 
+ // const debounce = new Debounce<string, Promise<UserDom[]>>(200);
+     
+
+const PostFormYup =({users=[],onClick, onSearchUser, allUsersLoad}:Readonly<PostFormProps>)=> {
 
     const { t } = useTranslation();
 
@@ -57,29 +61,29 @@ const PostFormYup =({users=[],onClick, onSearchUser}:Readonly<PostFormProps>)=> 
   const onSubmit = (data:PostRequestDom) => onClick(data)
   const exampleAmount = 1000; // Ejemplo de cantidad monetaria
  
-  /* const loadOptions = (
+   const loadOptions = (
     inputValue: string,
     callback: (options: UserDom[]) => void
   ) => {
     
-    setTimeout(async() => {
      console.log("llego al formyup", users)
+     //debounce(onSearchUser(inputValue),300) 
 
-  
+     debounceUtil.$debounce(async() => {
+    const result=await onSearchUser(inputValue)
+    callback(result)
+   
+    },300)
 
-     //let callbacklocal = 
-     const debounce = new Debounce<string, Promise<UserDom[]>>(200);
-     
-     debounce.execute(inputValue,async (value: string)=>{
-      console.log("value execuete",value)
-     const result = await onSearchUser(value)
-     callback(result)
-      return result
-  })
+   /* debounce(async (query: string) => {
+      const result=await onSearchUser(query)
+      callback(result)
+  }, 1000)(inputValue)*/
     
-  
-    }, 1000);
-  }; */
+
+  }; 
+
+
 
   //const promiseOptions = (inputValue: string) =>new Promise<UserDom[]>((resolve) => {resolve(onSearchUser(inputValue))});
  
@@ -101,7 +105,7 @@ const PostFormYup =({users=[],onClick, onSearchUser}:Readonly<PostFormProps>)=> 
               <option key={user.id} value={user.id ?? ""}>{user.name}</option>
             ))}
           </select> */}
-          <AsyncSelect  loadOptions={promiseOptions} defaultOptions={users} getOptionLabel={(value)=>value.name ?? ''} getOptionValue={(value)=>value.id ?? ''} />
+          <AsyncSelect onMenuClose={allUsersLoad} isClearable={true} loadOptions={loadOptions} defaultOptions={users} getOptionLabel={(value)=>value.name ?? ''} getOptionValue={(value)=>value.id ?? ''} />
           <div className="invalid-feedback  text-black">{errors.userid?.message}</div>
         </div>
   

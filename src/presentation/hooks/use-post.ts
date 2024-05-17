@@ -17,6 +17,7 @@ function usePost(  allUserUseCase: AllUsersUseCase,
     const [error, setError] = useState<boolean>(false); 
      //new users 
      const [usersMemory, setUsersMemory] = useState<UserDom[]>([]); 
+
      async function allUsers() {
         const resultData = await allUserUseCase?.execute(NoParams)
         resultData.fold((data: UserDom[]) => {setUsers(data); setUsersMemory(data)}, (_: Failure) => setError(true))
@@ -25,11 +26,6 @@ function usePost(  allUserUseCase: AllUsersUseCase,
     }
      const searchUsers = async (value:string):Promise<UserDom[]>=>{
         
-          if(!value){
-            await allUsers()
-            console.log("DENTRO DE ALLUSERS",)
-            return users
-          }  
           
           const resultUser = usersMemory.filter(users=>users.name?.toLowerCase().includes(value.toLowerCase()))
           console.log("USER SEARCH",resultUser)
@@ -37,6 +33,7 @@ function usePost(  allUserUseCase: AllUsersUseCase,
           return resultUser
      }
  
+
    
 
     React.useEffect(() => {
@@ -54,6 +51,7 @@ function usePost(  allUserUseCase: AllUsersUseCase,
         loading,
         addPost,
         searchUsers,
+        allUsers,
         error
     };
 }

@@ -18,7 +18,7 @@ import PostFormYupMaterial from '@presentation/components/post/PostFormMaterial'
  
 function TaskPage() {
   const {t} = useTranslation();
-  const {users, addPost, searchUsers } = usePost(di.get<AllUsersUseCase>(USER_SYMBOLS.USER_LIST), di.get<CreatePublicationUseCase>(POST_SYMBOLS.POST_CREATE));
+  const {users, addPost, searchUsers, allUsers } = usePost(di.get<AllUsersUseCase>(USER_SYMBOLS.USER_LIST), di.get<CreatePublicationUseCase>(POST_SYMBOLS.POST_CREATE));
   const {
     tasks,
     loading,
@@ -39,8 +39,8 @@ function TaskPage() {
         addPost(_)
       } }/>  */}
        <PostFormYup onSearchUser={searchUsers} users={users} onClick={function (_: PostRequestDom): void {
-        addPost(_)
-      } }/> 
+        addPost(_);
+      } } allUsersLoad={allUsers}/> 
     
       <h1 className='text-red-500 uppercase text-lg mt-5'>{t("title")}</h1>
       <TaskSearch onChange={(query: string) => query ? searchTasks(query): allTasks()} />

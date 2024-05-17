@@ -18,3 +18,44 @@ export class Debounce<T, Result = void>{
         }
     }
 }
+
+class DebounceUtil {
+    private debounce:any
+    private static instance: DebounceUtil;
+    //Assign "new Singleton()" here to avoid lazy initialisation
+    constructor() {
+        if (DebounceUtil.instance) {
+            return DebounceUtil.instance;
+        }
+        DebounceUtil.instance = this;
+    }
+
+    $debounce(callback: (...args: unknown[]) => void, ms: number = 700) {
+        clearTimeout(this.debounce)
+          this.debounce = setTimeout(() => {
+            callback()
+        }, ms)
+    }
+}
+export const debounceUtil =new  DebounceUtil();
+
+//otra impentacion
+
+type DebouncedFunction<A = unknown, R = void> = (args: A) => Promise<R>;
+
+export function debounce<A, R>(
+  fn: (args: A) => R,
+  delay: number
+): DebouncedFunction<A, R> {
+  let timer: NodeJS.Timeout;
+  return (args: A) => {
+    return new Promise<R>((resolve) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        resolve(fn(args));
+      }, delay);
+    });
+  };
+}
