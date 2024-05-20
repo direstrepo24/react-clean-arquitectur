@@ -10,6 +10,7 @@ import CheckIcon from "@presentation/assets/icons/CheckIcon";
 import Select, { InputActionMeta, SingleValue } from 'react-select'
 import AsyncSelect from "react-select/async";
 import { Debounce, debounce, debounceUtil } from "@core/index";
+import CurrencyDisplay from "../atomic/atoms/CurrencyDisplay";
 
 
 interface PostFormProps {
@@ -61,7 +62,8 @@ const PostFormYup =({users=[],onClick, onSearchUser, allUsersLoad}:Readonly<Post
   const onSubmit = (data:PostRequestDom) => onClick(data)
   const exampleAmount = 1000; // Ejemplo de cantidad monetaria
  
-   const loadOptions = (
+  /* 
+  const loadOptions = (
     inputValue: string,
     callback: (options: UserDom[]) => void
   ) => {
@@ -69,11 +71,11 @@ const PostFormYup =({users=[],onClick, onSearchUser, allUsersLoad}:Readonly<Post
      console.log("llego al formyup", users)
      //debounce(onSearchUser(inputValue),300) 
 
-     debounceUtil.$debounce(async() => {
+    /*  debounceUtil.$debounce(async() => {
     const result=await onSearchUser(inputValue)
     callback(result)
    
-    },300)
+    },300) 
 
    /* debounce(async (query: string) => {
       const result=await onSearchUser(query)
@@ -81,18 +83,30 @@ const PostFormYup =({users=[],onClick, onSearchUser, allUsersLoad}:Readonly<Post
   }, 1000)(inputValue)*/
     
 
-  }; 
+  //}; 
 
 
+  const loadOptions = (
+    inputValue: string,
+    callback: (options: UserDom[]) => void
+) => {
+    debouncedSearch(inputValue,callback)
+};
 
-  //const promiseOptions = (inputValue: string) =>new Promise<UserDom[]>((resolve) => {resolve(onSearchUser(inputValue))});
- 
-  const promiseOptions = (inputValue: string) =>
-    new Promise<UserDom[]>((resolve) => {
-      setTimeout(() => {
-        resolve(onSearchUser(inputValue));
-      }, 1000);
-    });
+const debouncedSearch = debounce(async (inputValue: string, callback: (options: UserDom[]) => void) => {
+    const result= await onSearchUser(inputValue)
+    callback(result)
+}, 500);
+
+
+/**
+ * Lista de fondos de inversión para ejemplo
+ */
+const funds = [
+  { name: 'Fondo A', currency: 'USD', value: 10000 },
+  { name: 'Fondo B', currency: 'COP', value: 25000000 },
+  { name: 'Fondo C', currency: 'EUR', value: 1500000 },
+];
  
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form-control w-full max-w-xs mx-auto text-white">
@@ -138,6 +152,18 @@ const PostFormYup =({users=[],onClick, onSearchUser, allUsersLoad}:Readonly<Post
              {t('currencyFormat', { value: exampleAmount, number: 'number' })} 
          </div>
         </div>
+
+        <div>
+      <h1>Fondos de Inversión</h1>
+      <ul className="fund-list">
+        {funds.map(fund => (
+          <li key={fund.name} className="fund-item">
+            <h2>{fund.name}</h2>
+            <CurrencyDisplay value={fund.value} currency={fund.currency} addMask />
+          </li>
+        ))}
+      </ul>
+    </div>
   
         {/* Botón de envío */}
        {/*  <div>
