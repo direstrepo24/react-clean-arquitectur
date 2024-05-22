@@ -11,6 +11,9 @@ import Select, { InputActionMeta, SingleValue } from 'react-select'
 import AsyncSelect from "react-select/async";
 import { Debounce, debounce, debounceUtil } from "@core/index";
 import CurrencyDisplay from "../atomic/atoms/CurrencyDisplay";
+import CurrencyInput from "../atomic/atoms/CurrencyInput";
+import { formatCurrency } from "@core/utils/FormatCurrency";
+import { useState } from "react";
 
 
 interface PostFormProps {
@@ -100,13 +103,30 @@ const debouncedSearch = debounce(async (inputValue: string, callback: (options: 
 
 
 /**
- * Lista de fondos de inversión para ejemplo
+ * Lista de fondos de inversión para ejemplo - ejemplo para simular seleccion y mostrear tipo de moneda
  */
 const funds = [
   { name: 'Fondo A', currency: 'USD', value: 10000 },
-  { name: 'Fondo B', currency: 'COP', value: 25000000 },
+  { name: 'Fondo B', currency: 'COP', value: 250000.67 },
   { name: 'Fondo C', currency: 'EUR', value: 1500000 },
 ];
+
+const formatValue = [
+  { name: 'Fondo A', currency: 'USD' },
+  { name: 'Fondo B', currency: 'COP' },
+  { name: 'Fondo C', currency: 'EUR' },
+];
+
+const [selectedFund, setSelectedFund] = useState(formatValue[0]);
+  const [amount, setAmount] = useState(0);
+
+  const handleFundChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const fund = formatValue.find(f => f.name === e.target.value);
+    if (fund) {
+      setSelectedFund(fund);
+    }
+  };
+
  
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form-control w-full max-w-xs mx-auto text-white">
@@ -154,7 +174,7 @@ const funds = [
         </div>
 
         <div>
-      <h1>Fondos de Inversión</h1>
+      <h1>Fondos de Inversión- Display</h1>
       <ul className="fund-list">
         {funds.map(fund => (
           <li key={fund.name} className="fund-item">
@@ -163,6 +183,28 @@ const funds = [
           </li>
         ))}
       </ul>
+    </div>
+
+    <div>
+      <h1>Fondos de Inversión</h1>
+      <select onChange={handleFundChange}>
+        {formatValue.map(fund => (
+          <option key={fund.name} value={fund.name}>
+            {fund.name}
+          </option>
+        ))}
+      </select>
+      <CurrencyInput
+        value={amount}
+        onChange={setAmount}
+        currency={selectedFund.currency}
+        locale={selectedFund.currency === 'COP' ? 'es-CO' : 'en-US'}
+        addMask
+        maxDigits={10}
+      />
+      <div className="formatted-amount">
+        Valor Formateado: {formatCurrency(amount, { currency: selectedFund.currency, locale: selectedFund.currency === 'COP' ? 'es-CO' : 'en-US', addMask: true })}
+      </div>
     </div>
   
         {/* Botón de envío */}

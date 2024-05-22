@@ -1,0 +1,43 @@
+// styles.scss
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 20px;
+}
+
+select, input {
+  display: block;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 1.2em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: black; // Asegura que el texto del input sea negro
+}
+
+.input-container {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.formatted-amount {
+  color: black;
+  font-weight: bold;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1.2em;
+  max-width: 300px;
+}
+
+
+
+
+
+  
