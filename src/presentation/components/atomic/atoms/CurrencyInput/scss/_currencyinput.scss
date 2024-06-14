@@ -16,14 +16,6 @@ select, input {
   color: black; // Asegura que el texto del input sea negro
 }
 
-.input-container {
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  max-width: 300px;
-  margin-bottom: 20px;
-}
 
 .formatted-amount {
   color: black;
@@ -36,6 +28,32 @@ select, input {
   max-width: 300px;
 }
 
+.currency-input {
+  font-size: 16px; // Tamaño de fuente normal
+}
+
+
+.currency-input small {
+  font-size: 0.8em; /* Ajusta el tamaño como prefieras */
+}
+
+.decimal-part {
+  font-size: 0.8em; /* Ajusta el tamaño como prefieras */
+}
+
+.input-container {
+  .currency-input {
+    border: 1px solid #ccc; // Ajusta según el diseño
+    padding: 8px;
+    font-size: 16px; // Ajusta según el diseño
+  }
+
+  .decimal-part {
+    font-size: 12px; // Más pequeño para la parte decimal
+    color: #666; // Color diferente para la parte decimal
+    padding-left: 2px;
+  }
+}
 
 
 

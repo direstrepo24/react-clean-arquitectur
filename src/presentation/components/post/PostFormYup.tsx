@@ -9,11 +9,12 @@ import CheckIcon from "@presentation/assets/icons/CheckIcon";
 
 import Select, { InputActionMeta, SingleValue } from 'react-select'
 import AsyncSelect from "react-select/async";
-import { Debounce, debounce, debounceUtil } from "@core/index";
+import { debounce } from "@core/index";
 import CurrencyDisplay from "../atomic/atoms/CurrencyDisplay";
 import CurrencyInput from "../atomic/atoms/CurrencyInput";
-import { formatCurrency } from "@core/utils/FormatCurrency";
+
 import { useState } from "react";
+import { formatCurrencyDecimal } from "@core/utils/FormateCurrencyDecimal";
 
 
 interface PostFormProps {
@@ -194,6 +195,7 @@ const [selectedFund, setSelectedFund] = useState(formatValue[0]);
           </option>
         ))}
       </select>
+
       <CurrencyInput
         value={amount}
         onChange={setAmount}
@@ -201,9 +203,13 @@ const [selectedFund, setSelectedFund] = useState(formatValue[0]);
         locale={selectedFund.currency === 'COP' ? 'es-CO' : 'en-US'}
         addMask
         maxDigits={10}
-      />
+        />
+<div className="formatted-amount">
+  Valor Formateado: {formatCurrencyDecimal(amount, { currency: selectedFund.currency, locale: selectedFund.currency === 'COP' ? 'es-CO' : 'en-US', addMask: true }).formattedValue}
+</div>
+
       <div className="formatted-amount">
-        Valor Formateado: {formatCurrency(amount, { currency: selectedFund.currency, locale: selectedFund.currency === 'COP' ? 'es-CO' : 'en-US', addMask: true })}
+        Valor Formateado: {formatCurrencyDecimal(amount, { currency: selectedFund.currency, locale: selectedFund.currency === 'COP' ? 'es-CO' : 'en-US', addMask: true })}
       </div>
     </div>
   
